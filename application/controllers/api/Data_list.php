@@ -48,7 +48,7 @@ class Data_list extends CI_Controller {
     {
 
         // 取得传入数据
-        $data = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? json_decode($GLOBALS['HTTP_RAW_POST_DATA'], true) : [];
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
 
         $id = isset($data['id']) && $data['id'] !== '' ? $data['id'] : null; // 必填
 
@@ -76,7 +76,7 @@ class Data_list extends CI_Controller {
     {
 
         // 取得传入数据
-        $data = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? json_decode($GLOBALS['HTTP_RAW_POST_DATA'], true) : [];
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
 
         $name = isset($data['name']) && $data['name'] !== '' ? $data['name'] : null; // 必填
         $complete = isset($data['complete']) && $data['complete'] !== '' ? intval($data['complete']) : null; // 必填
@@ -121,7 +121,7 @@ class Data_list extends CI_Controller {
     public function update_data ()
     {
         // 取得传入数据
-        $data = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? json_decode($GLOBALS['HTTP_RAW_POST_DATA'], true) : [];
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
 
         $id = isset($data['id']) && $data['id'] !== '' ? intval($data['id']) : null; // 必填
         $name = isset($data['name']) && $data['name'] !== '' ? $data['name'] : null; // 必填
