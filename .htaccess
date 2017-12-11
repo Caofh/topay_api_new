@@ -1,0 +1,6 @@
+RewriteEngine On
+DirectoryIndex index.html index.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^(application|system)$
+RewriteRule ^(.*)$ index.php [L]
