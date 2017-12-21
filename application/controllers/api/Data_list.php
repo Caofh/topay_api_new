@@ -163,6 +163,31 @@ class Data_list extends CI_Controller {
 
     }
 
+    // 获取用户头像列表接口
+    public function get_avator_list(){
+
+        // 处理传参
+        $id = isset($_GET['id']) && $_GET['id'] !== '' ? $_GET['id'] : null; // 选填
+
+        $param = [
+            'id' => $id
+        ];
+
+        $query_arr = $this->content->get_avator_list($param);
+        $query = $query_arr['query'];
+        $total_all = $query_arr['total_all'];
+
+        $data = [
+            'data' => $query,
+            'total_all' => $total_all
+        ];
+
+        $out_data = out_format($data);
+
+        renderJson($out_data);
+
+    }
+
 
 }
 ?>

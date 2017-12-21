@@ -47,6 +47,36 @@ class Content extends CI_Model{
 
     }
 
+    // 查询用户头像数据表
+    public function get_avator_list($param = [])
+    {
+
+        $id = $param['id'];
+
+        if (isset($id)) {
+            if (isset($id) && $id !== '') {
+                $where['id'] = $id;
+            }
+
+            $this->db->where($where);
+        }
+
+        $this->db->from('user');
+
+        $db = clone($this->db);
+        $total_all = $this->db->count_all_results(); // user总数
+
+        // 新查询总数后，用可从的db配置在查询真正的数据
+        $this->db = $db;
+        $query = $this->db->get();
+
+        return [
+            'query' => $query->result(),
+            'total_all' => $total_all
+        ];
+
+    }
+
     // 删除数据表数据
     public function delete_data($param = [])
     {
