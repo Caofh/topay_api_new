@@ -84,7 +84,6 @@ class Content extends CI_Model{
     // 更新数据表数据
     function update_data ($param = [])
     {
-
         $id = isset($param['id']) ? $param['id'] : null;
         $name = isset($param['name']) ? toDatabaseStr($param['name']) : 'null';
         $content_uri = isset($param['content_uri']) ? toDatabaseStr($param['content_uri']) : 'null';
@@ -107,7 +106,6 @@ class Content extends CI_Model{
             $query = $this->db->query($order);
         }
     }
-
 
 }
 ?>
