@@ -52,10 +52,22 @@ class Content extends CI_Model{
     {
 
         $id = $param['id'];
+        $choose_status = $param['choose_status'];
 
-        if (isset($id)) {
+        if (isset($id) && isset($choose_status)) {
+            $where['id'] = $id;
+            $where['choose_status'] = $choose_status;
+
+            $this->db->where($where);
+        } elseif (isset($id)) {
             if (isset($id) && $id !== '') {
                 $where['id'] = $id;
+            }
+
+            $this->db->where($where);
+        } elseif (isset($choose_status)) {
+            if (isset($choose_status) && $choose_status !== '') {
+                $where['choose_status'] = $choose_status;
             }
 
             $this->db->where($where);

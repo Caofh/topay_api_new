@@ -168,9 +168,11 @@ class Data_list extends CI_Controller {
 
         // 处理传参
         $id = isset($_GET['id']) && $_GET['id'] !== '' ? $_GET['id'] : null; // 选填
+        $choose_status = isset($_GET['choose_status']) && $_GET['choose_status'] !== '' ? $_GET['choose_status'] : null; // 选填
 
         $param = [
-            'id' => $id
+            'id' => $id,
+            'choose_status' => $choose_status
         ];
 
         $query_arr = $this->content->get_avator_list($param);
