@@ -12,8 +12,8 @@ class Limit extends CI_Model{
     public function get_choose_list($param = [])
     {
 
-        $id = $param['id'];
-        $name = $param['name'];
+        $id = isset($param['id']) ? $param['id'] : null;
+        $name = isset($param['name']) ? $param['name'] : null;
 
         if (isset($id) || isset($name)) {
             if (isset($id) && $id !== '') {
@@ -46,8 +46,8 @@ class Limit extends CI_Model{
     public function get_vote_list($param = [])
     {
 
-        $id = $param['id'];
-        $name = $param['name'];
+        $id = isset($param['id']) ? $param['id'] : null;
+        $name = isset($param['name']) ? $param['name'] : null;
 
         if (isset($id) || isset($name)) {
             if (isset($id) && $id !== '') {
@@ -74,6 +74,25 @@ class Limit extends CI_Model{
             'total_all' => $total_all
         ];
 
+    }
+
+    // 更新vote_list的投票数据表数据
+    function update_vote_data ($param = [])
+    {
+
+        $id = isset($param['id']) ? $param['id'] : null;
+        $chooseNum = isset($param['chooseNum']) ? toDatabaseStr($param['chooseNum']) : 'null';
+
+        if (isset($id)) {
+            if ($chooseNum && $chooseNum !== 'null') {
+                $order = 'update vote_list set 
+                count='.$chooseNum.'
+                where id='.$id.'';
+
+                $query = $this->db->query($order);
+            }
+
+        }
     }
 
 }
