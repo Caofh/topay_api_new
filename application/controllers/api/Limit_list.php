@@ -111,6 +111,69 @@ class Limit_list extends CI_Controller {
 
     }
 
+    // 查询参加走秀选手的数据数据
+    public function player_list(){
+
+        // 处理传参
+        $name = isset($_GET['name']) && $_GET['name'] !== '' ? $_GET['name'] : null; // 选填
+
+        $param = [
+            'name' => $name
+        ];
+
+        $query_arr = $this->limit->get_player_list($param);
+        $query = $query_arr['query'];
+        $total_all = $query_arr['total_all'];
+
+        $data = [
+            'data' => $query,
+            'total_all' => $total_all,
+            'total' => count($query)
+        ];
+
+        $out_data = out_format($data);
+
+        renderJson($out_data);
+
+    }
+
+    // 更新参加走秀选手信息
+    public function update_player_data ()
+    {
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+
+        $id = isset($data['id']) && $data['id'] !== '' ? intval($data['id']) : null; // 必填
+        $name = isset($data['name']) && $data['name'] !== '' ? $data['name'] : null; // 选填
+        $number = isset($data['number']) && $data['number'] !== '' ? $data['number'] : null; // 选填
+        $img_url = isset($data['img_url']) && $data['img_url'] !== '' ? $data['img_url'] : null; // 选填
+        $group_type = isset($data['group_type']) && $data['group_type'] !== '' ? $data['group_type'] : null; // 选填
+
+        $mark = via_param([$id]);
+
+        if ($mark) {
+
+            $param = [
+                'id' => $id,
+                'name' => $name,
+                'number' => $number,
+                'img_url' => $img_url,
+                'group_type' => $group_type,
+            ];
+
+            $query = $this->limit->update_player_data($param);
+
+            $out_data = out_format(null, '更新成功');
+
+
+        } else {
+            $out_data = out_format(null, '参数有误', 'fail');
+        }
+
+        renderJson($out_data);
+
+    }
+
 
 }
 ?>
