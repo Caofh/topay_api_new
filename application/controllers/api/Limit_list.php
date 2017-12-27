@@ -111,6 +111,36 @@ class Limit_list extends CI_Controller {
 
     }
 
+    // 增加投票数据信息接口
+    public function add_vote_data ()
+    {
+
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+
+        $name = isset($data['name']) && $data['name'] !== '' ? $data['name'] : null; // 必填
+        $count = isset($data['count']) && $data['count'] !== '' ? $data['count'] : null;
+
+        $mark = via_param([$name, $count]);
+
+        if ($mark) {
+            $param = [
+                'name' => $name,
+                'count' => $count
+            ];
+
+            $query = $this->limit->add_vote_data($param);
+
+            $out_data = out_format(null, '操作成功');
+
+        } else {
+            $out_data = out_format(null, '参数有误', 'fail');
+        }
+
+        renderJson($out_data);
+
+    }
+
     // 查询参加走秀选手的数据数据
     public function player_list(){
 

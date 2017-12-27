@@ -125,6 +125,20 @@ class Limit extends CI_Model{
         }
     }
 
+    // 插入vote_list的投票数据表数据
+    public function add_vote_data ($param = [])
+    {
+
+        $name = isset($param['name']) ? toDatabaseStr($param['name']) : 'null';
+        $count = isset($param['count']) ? toDatabaseStr($param['count']) : 'null';
+
+        $order = 'insert into vote_list
+        (id,name,count)
+        values(null, '.$name.', '.$count.')';
+
+        $query = $this->db->query($order);
+    }
+
     // 更新player_list的走秀数据表数据
     function update_player_data ($param = [])
     {
