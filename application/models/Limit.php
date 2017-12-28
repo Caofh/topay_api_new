@@ -236,5 +236,35 @@ class Limit extends CI_Model{
 
     }
 
+    // 获取全公司所有人员数据
+    public function get_company_list($param = [])
+    {
+
+        $name = isset($param['mobile']) ? $param['mobile'] : null;
+
+        if (isset($name)) {
+            if (isset($name) && $name !== '') {
+                $where['name'] = $name;
+            }
+
+            $this->db->where($where);
+        }
+
+        $this->db->from('company_all_list');
+
+        $db = clone($this->db);
+        $total_all = $this->db->count_all_results(); // player_list数据表总数
+
+        // 新查询总数后，用可从的db配置在查询真正的数据
+        $this->db = $db;
+        $query = $this->db->get();
+
+        return [
+            'query' => $query->result(),
+            'total_all' => $total_all
+        ];
+
+    }
+
 }
 ?>

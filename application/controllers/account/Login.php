@@ -6,6 +6,7 @@ class Login extends CI_Controller {
         parent::__construct();
 
         $this->load->model('user');
+        $this->load->model('limit');
 
         date_default_timezone_set('PRC'); // 将区时设为北京时区
     }
@@ -88,19 +89,32 @@ class Login extends CI_Controller {
                 'allow' => $allow
             ];
 
-            $query = $this->user->auth($param);
+            // 获取公司所有人员数据
+            $query = $this->limit->get_company_list($param);
 
-            $database_mobile = isset($query['query']) && isset($query['query'][0]) && isset($query['query'][0]->mobile) ?
-                $query['query'][0]->mobile : null;
+            $person_mark = $query['total_all'];
 
-            if ($database_mobile == $mobile) {
-                $out_data = out_format(null, '您已经注册过，如忘记密码请联系管理员', 'fail');
+            if ($person_mark) {
+
+                $query = $this->user->auth($param);
+
+                $database_mobile = isset($query['query']) && isset($query['query'][0]) && isset($query['query'][0]->mobile) ?
+                    $query['query'][0]->mobile : null;
+
+                if ($database_mobile == $mobile) {
+                    $out_data = out_format(null, '您已经注册过，如忘记密码请联系管理员', 'fail');
+
+                } else {
+                    $query = $this->user->register($param);
+
+                    $out_data = out_format(null, '用户注册成功');
+                }
 
             } else {
-                $query = $this->user->register($param);
+                $out_data = out_format(null, '请用真实姓名注册或不在公司名单中，如有疑问，请联系管理员查询', 'fail');
 
-                $out_data = out_format(null, '用户注册成功');
             }
+
 
         } else {
             $out_data = out_format(null, '请填写姓名及密码', 'fail');
