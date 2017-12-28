@@ -39,10 +39,11 @@ class User extends CI_Model{
 
         $mobile = isset($param['mobile']) ? toDatabaseStr($param['mobile']) : 'null';
         $password = isset($param['password']) ? toDatabaseStr($param['password']) : 'null';
+        $allow = isset($param['allow']) ? toDatabaseStr($param['allow']) : 'null';
 
         $order = 'insert into user
-        (id,mobile,password)
-        values(null, '.$mobile.', '.$password.')';
+        (id,mobile,password,allow)
+        values(null, '.$mobile.', '.$password.', '.$allow.')';
 
         $query = $this->db->query($order);
 

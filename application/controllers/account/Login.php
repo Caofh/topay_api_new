@@ -77,6 +77,7 @@ class Login extends CI_Controller {
 
         $mobile = isset($data['mobile']) && $data['mobile'] !== '' ? $data['mobile'] : null;
         $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
+        $allow = isset($data['allow']) && $data['allow'] !== '' ? $data['allow'] : null;
 
         $mark = via_param([$mobile, $password]);
 
@@ -84,6 +85,7 @@ class Login extends CI_Controller {
             $param = [
                 'mobile' => $mobile,
                 'password' => $password,
+                'allow' => $allow
             ];
 
             $query = $this->user->auth($param);
