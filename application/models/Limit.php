@@ -206,5 +206,35 @@ class Limit extends CI_Model{
         }
     }
 
+    // 获取是否允许走秀投票开始数据
+    public function get_allow($param = [])
+    {
+
+        $choose = isset($param['choose']) ? $param['choose'] : null;
+
+        if (isset($choose)) {
+            if (isset($choose) && $choose !== '') {
+                $where['choose'] = $choose;
+            }
+
+            $this->db->where($where);
+        }
+
+        $this->db->from('vote_control');
+
+        $db = clone($this->db);
+        $total_all = $this->db->count_all_results(); // player_list数据表总数
+
+        // 新查询总数后，用可从的db配置在查询真正的数据
+        $this->db = $db;
+        $query = $this->db->get();
+
+        return [
+            'query' => $query->result(),
+            'total_all' => $total_all
+        ];
+
+    }
+
 }
 ?>

@@ -235,6 +235,32 @@ class Limit_list extends CI_Controller {
 
     }
 
+    // 获取是否允许走秀投票接口
+    public function get_allow(){
+
+        // 处理传参
+        $choose = isset($_GET['choose']) && $_GET['choose'] !== '' ? $_GET['choose'] : null; // 选填
+
+        $param = [
+            'choose' => $choose
+        ];
+
+        $query_arr = $this->limit->get_allow($param);
+        $query = $query_arr['query'];
+        $total_all = $query_arr['total_all'];
+
+        $data = [
+            'data' => $query,
+            'total_all' => $total_all,
+            'total' => count($query)
+        ];
+
+        $out_data = out_format($data);
+
+        renderJson($out_data);
+
+    }
+
 
 }
 ?>
