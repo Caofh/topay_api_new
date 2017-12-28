@@ -145,7 +145,7 @@ class Limit_list extends CI_Controller {
                 $out_data = out_format(null, '操作成功');
 
             } else {
-                $out_data = out_format(null, '请用真实姓名注册或不在公司名单中，如有疑问，请联系管理员查询', 'fail');
+                $out_data = out_format(null, '请用真实姓名投票或您不在公司名单中，如有疑问，请联系管理员查询', 'fail');
 
             }
 
