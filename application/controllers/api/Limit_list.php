@@ -204,6 +204,37 @@ class Limit_list extends CI_Controller {
 
     }
 
+    // 更新允许投票接口信息
+    public function update_allow_data ()
+    {
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+
+        $type = isset($data['type']) && $data['type'] !== '' ? intval($data['type']) : null; // 必填
+        $allow = isset($data['allow']) && $data['allow'] !== '' ? $data['allow'] : null; // 选填
+
+        $mark = via_param([$type]);
+
+        if ($mark) {
+
+            $param = [
+                'type' => $type,
+                'allow' => $allow
+            ];
+
+            $query = $this->limit->update_allow_data($param);
+
+            $out_data = out_format(null, '更新成功');
+
+
+        } else {
+            $out_data = out_format(null, '参数有误', 'fail');
+        }
+
+        renderJson($out_data);
+
+    }
+
 
 }
 ?>

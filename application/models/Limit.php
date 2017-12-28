@@ -186,5 +186,25 @@ class Limit extends CI_Model{
         }
     }
 
+    // 更新vote_control的是否允许投票的数据表数据
+    function update_allow_data ($param = [])
+    {
+
+        $type = isset($param['type']) ? $param['type'] : null;
+        $allow = isset($param['allow']) ? toDatabaseStr($param['allow']) : 'null';
+
+        if (isset($type)) {
+
+            if ($allow && $allow !== 'null') {
+                $order = 'update vote_control set 
+                allow='.$allow.'
+                where type='.$type.'';
+
+                $query = $this->db->query($order);
+            }
+
+        }
+    }
+
 }
 ?>
