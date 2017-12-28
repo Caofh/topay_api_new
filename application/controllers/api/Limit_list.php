@@ -124,14 +124,30 @@ class Limit_list extends CI_Controller {
         $mark = via_param([$name, $count]);
 
         if ($mark) {
-            $param = [
-                'name' => $name,
-                'count' => $count
+
+            $param_check = [
+              'mobile' => $name
             ];
 
-            $query = $this->limit->add_vote_data($param);
+            // 获取公司所有人员数据
+            $query = $this->limit->get_company_list($param_check);
 
-            $out_data = out_format(null, '操作成功');
+            $person_mark = $query['total_all'];
+
+            if ($person_mark) {
+                $param = [
+                    'name' => $name,
+                    'count' => $count
+                ];
+
+                $query = $this->limit->add_vote_data($param);
+
+                $out_data = out_format(null, '操作成功');
+
+            } else {
+                $out_data = out_format(null, '请用真实姓名注册或不在公司名单中，如有疑问，请联系管理员查询', 'fail');
+
+            }
 
         } else {
             $out_data = out_format(null, '参数有误', 'fail');
