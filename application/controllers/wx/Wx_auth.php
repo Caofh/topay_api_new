@@ -18,7 +18,7 @@ class Wx_auth extends CI_Controller {
         $signature = isset($_GET['signature']) && $_GET['signature'] !== '' ? $_GET['signature'] : null; //
         $timestamp = isset($_GET['timestamp']) && $_GET['timestamp'] !== '' ? $_GET['timestamp'] : null; //
         $nonce = isset($_GET['nonce']) && $_GET['nonce'] !== '' ? $_GET['nonce'] : null; //
-        $echostr = isset($_GET['echostr']) && $_GET['echostr'] !== '' ? $_GET['echostr'] : null; //
+        $echostr = isset($_GET['echostr']) && $_GET['echostr'] !== '' ? (string)($_GET['echostr']) : null; //
 
         $param = [
             'signature' => $signature,
@@ -27,7 +27,7 @@ class Wx_auth extends CI_Controller {
             'echostr' => $echostr
         ];
 
-        return $param['echostr'];
+        echo $echostr;
 
     }
 
