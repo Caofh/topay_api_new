@@ -27,8 +27,7 @@ class Wx_auth extends CI_Controller {
             'echostr' => $echostr
         ];
 
-
-        renderJson($param);
+        return $param['echostr'];
 
     }
 
