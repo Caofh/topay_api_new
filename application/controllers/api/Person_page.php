@@ -29,14 +29,83 @@ class Person_page extends CI_Controller {
         $query = $query_arr['query'];
         $total_all = $query_arr['total_all'];
 
+        // 筛选出所有时间戳和资源类型
+        $timeArr = [];
+        $typeArr = [];
+        foreach ($query as $item) {
+            $nowStamp = $item->timestamp;
+            $nowType = $item->source_type;
+            if (!in_array($nowStamp, $timeArr)) {
+                array_push($timeArr,$nowStamp);
+            }
+            if (!in_array($nowType, $typeArr)) {
+                array_push($typeArr,$nowType);
+            }
+        }
+
+        // 按照时间戳整理数据
+        $data_result = [];
+        foreach ($timeArr as $item) {
+
+            $obj = [];
+            $obj_data = [];
+
+            $currStamp = $item;
+            foreach ($query as $item_son) {
+
+                // 如果时间戳相等的话
+                if ($item_son->timestamp === $currStamp) {
+                    $obj = [
+                        'timestamp' => $item_son->timestamp
+                    ];
+                    array_push($obj_data, $item_son);
+
+                }
+
+            }
+
+            $obj_data_new = [];
+            foreach ($typeArr as $item_type) {
+
+                // item是每一个类型（每个时间戳中的）
+                $obj_type = [
+                    'source_type' => '',
+                    'data' => []
+                ];
+
+                $obj_data_type = [];
+                $currType = $item_type;
+                foreach ($obj_data as $item_son_type) {
+
+                    // 如果资源类型相等的话
+                    if ($item_son_type->source_type == $currType) {
+                        $obj_type['source_type'] = $item_son_type->source_type;
+                        array_push($obj_data_type, $item_son_type);
+
+                    }
+
+                }
+
+                $obj_type['data'] = $obj_data_type;
+
+                if ($obj_type['source_type'] !== '' && count($obj_type['data']) ) {
+                    array_push($obj_data_new, $obj_type);
+                }
+
+            }
+
+            $obj['data'] = $obj_data_new;
+            array_push($data_result, $obj);
+
+        }
+
         $data = [
-            'data' => $query,
+            'data' => $data_result,
             'total_all' => $total_all,
             'total' => count($query)
         ];
 
         $out_data = out_format($data);
-
         renderJson($out_data);
 
     }
