@@ -11,7 +11,7 @@ class Person_page extends CI_Controller {
     }
 
 
-    // 查询首页列表数据
+    // 查询personPage详情数据
     public function index(){
 
         // 处理传参
@@ -110,6 +110,42 @@ class Person_page extends CI_Controller {
 
     }
 
+
+    // 增加资源数据
+    public function add_data ()
+    {
+
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+
+        $user_id = isset($data['user_id']) && $data['user_id'] !== '' ? $data['user_id'] : null; // 必填
+        $user_name = isset($data['user_name']) && $data['user_name'] !== '' ? $data['user_name'] : null;
+        $timestamp = isset($data['timestamp']) && $data['timestamp'] !== '' ? $data['timestamp'] : null;
+        $title = isset($data['title']) && $data['title'] !== '' ? $data['title'] : null;
+        $source_data = isset($data['source_data']) && is_array($data['source_data']) && count($data['source_data']) ? $data['source_data'] : null;
+
+        $mark = via_param([$user_id, $source_data]);
+
+        if ($mark) {
+            $param = [
+                'user_id' => $user_id,
+                'user_name' => $user_name,
+                'timestamp' => $timestamp,
+                'title' => $title,
+                'source_data' => $source_data
+            ];
+
+            $query = $this->PersonPage->add_data($param);
+
+            $out_data = out_format(null, '操作成功');
+
+        } else {
+            $out_data = out_format(null, '参数有误', 'fail');
+        }
+
+        renderJson($out_data);
+
+    }
 
 
 }
