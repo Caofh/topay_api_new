@@ -16,25 +16,28 @@ class PersonPage extends CI_Model{
         $start = $param['start'];
         $count = $param['count'];
 
+        // 手动切换本地的personpage数据库
+        $DB_person = $this->load->database('personPage', TRUE);
+
         if (isset($id)) {
             if (isset($id) && $id !== '') {
                 $where['id'] = $id;
             }
 
-            $this->db->where($where);
+            $DB_person->where($where);
         }
 
-        $this->db->from('person_show_list');
+        $DB_person->from('person_show_list');
 
-        $db = clone($this->db);
-        $total_all = $this->db->count_all_results(); // self_library总数
+        $db = clone($DB_person);
+        $total_all = $DB_person->count_all_results(); // self_library总数
 
         // 新查询总数后，用可从的db配置在查询真正的数据
-        $this->db = $db;
+        $DB_person = $db;
         if(intval($count) >= 0 ) {
-            $this->db->limit($count, $start);
+            $DB_person->limit($count, $start);
         }
-        $query = $this->db->get();
+        $query = $DB_person->get();
 
         return [
             'query' => $query->result(),
