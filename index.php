@@ -53,8 +53,22 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
+$site_url = '//'.$_SERVER['HTTP_HOST'];
+
+// 定义所属环境
+$env = 'production';
+
+
+// 判断正式和开发环境
+$env_mark = preg_match('#^\/\/118\.190\.207\.166\:.*#', $site_url)
+    || preg_match('#^\/\/tpdoc.cn#', $site_url);
+if (! $env_mark) {
+    // 开发环境
+    $env = 'development';
+}
+
+define('ENVIRONMENT', $env);
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
