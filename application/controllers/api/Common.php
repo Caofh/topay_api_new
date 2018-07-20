@@ -56,6 +56,51 @@ class Common extends CI_Controller {
 
     }
 
+    // 将base64文件生成二进制文件，并储存在uploads文件夹内.
+    public function base64_change()
+    {
+
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+        $image = isset($data['image']) && $data['image'] !== '' ? $data['image'] : ''; // base64的图片流
+        $image_path = isset($data['path']) && $data['path'] !== '' ? $data['path'] : ''; // 上传图片路径
+
+        if (strstr($image,",")){
+            $image = explode(',',$image);
+            $image = $image[1];
+        }
+
+        // 图片名字
+        $imageName = "cut_".date("His",time())."_".rand(1111,9999).'.png';
+
+        // 图片路径
+        $path = './uploads/' . $image_path;
+        if (!is_dir($path)){ //判断目录是否存在 不存在就创建
+            mkdir($path,0777,true);
+        }
+
+        $imageSrc=  $path."/". $imageName;  //图片路径 + 图片名字
+
+        $r = file_put_contents($imageSrc, base64_decode($image));//返回的是字节数
+        if (!$r) {
+            renderJson([
+                'data'=>null,
+                "code"=>1,
+                "msg"=>"图片生成失败",
+                "status" => 'fail'
+            ]);
+        }else{
+            renderJson([
+                'data'=>1,
+                "code"=>0,
+                "msg"=>"图片生成成功",
+                'target_path' => RESOURCE_URL.'/' . 'uploads' . '/' . $image_path .'/' . $imageName,
+                "status" => 'success'
+            ]);
+        }
+
+    }
+
 
 }
 ?>
