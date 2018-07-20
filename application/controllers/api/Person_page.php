@@ -14,7 +14,7 @@ class Person_page extends CI_Controller {
     // 查询personPage详情数据
     public function index(){
 
-        header('Access-Control-Allow-Origin:*');
+//        header('Access-Control-Allow-Origin:*');
 
         // 处理传参
         $id = isset($_GET['user_id']) && $_GET['user_id'] !== '' ? $_GET['user_id'] : null; // 必填

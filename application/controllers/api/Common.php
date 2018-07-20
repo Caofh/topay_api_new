@@ -12,7 +12,7 @@ class Common extends CI_Controller {
     public function upload_files ()
     {
 
-        header('Access-Control-Allow-Origin:*');
+//        header('Access-Control-Allow-Origin:*');
 
         // 取得传入数据
 //        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
