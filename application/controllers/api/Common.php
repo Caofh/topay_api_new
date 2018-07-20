@@ -65,9 +65,6 @@ class Common extends CI_Controller {
         $image = isset($data['image']) && $data['image'] !== '' ? $data['image'] : ''; // base64的图片流
         $image_path = isset($data['path']) && $data['path'] !== '' ? $data['path'] : ''; // 上传图片路径
 
-        renderJson($data);
-        exit;
-
         if (strstr($image,",")){
             $image = explode(',',$image);
             $image = $image[1];
