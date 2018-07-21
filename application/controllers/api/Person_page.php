@@ -19,7 +19,7 @@ class Person_page extends CI_Controller {
         // 处理传参
         $id = isset($_GET['user_id']) && $_GET['user_id'] !== '' ? $_GET['user_id'] : null; // 必填
         $start = isset($_GET['start']) && $_GET['start'] !== '' ? intval($_GET['start']) : 0; // 偏移起始
-        $count = isset($_GET['count']) && $_GET['count'] !== '' ? intval($_GET['count']) : 20; // 偏移数量
+        $count = isset($_GET['count']) && $_GET['count'] !== '' ? intval($_GET['count']) : 100; // 偏移数量
 
         $param = [
             'id' => $id,
