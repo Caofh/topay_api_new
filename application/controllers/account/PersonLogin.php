@@ -18,9 +18,22 @@ class PersonLogin extends CI_Controller {
         // 取得传入数据
         $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
 
-        $phone = isset($data['phone']) && $data['phone'] !== '' ? $data['phone'] : null;
-        $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
-        $type = isset($data['type']) && $data['type'] !== '' ? $data['type'] : 1; // 1:手机号；2：邮箱
+        $token = isset($data['token']) && $data['token'] !== '' ? $data['token'] : null;
+
+        if ($token) {
+            // 将token使用通用规则解码出参数.
+            $param_data = $token = authcode($token, 'DECODE', 'person_show', 0);
+            $targetArr = explode('/',$param_data); // 字符串分割
+
+            $phone = isset($targetArr[0]) && $targetArr[0] !== '' ? $targetArr[0] : null;
+            $password = isset($targetArr[1]) && $targetArr[1] !== '' ? $targetArr[1] : null;
+            $type = isset($targetArr[2]) && $targetArr[2] !== '' ? $targetArr[2] : 1; // 1:手机号；2：邮箱
+
+        } else {
+            $phone = isset($data['phone']) && $data['phone'] !== '' ? $data['phone'] : null;
+            $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
+            $type = isset($data['type']) && $data['type'] !== '' ? $data['type'] : 1; // 1:手机号；2：邮箱
+        }
 
         $mark = via_param([$phone, $password]);
 
@@ -40,8 +53,12 @@ class PersonLogin extends CI_Controller {
 
                 $dataOrigin = isset($query['query']) ?  (array)$query['query'] : null;
 
+                $auth_str = $phone.'/'.$password.'/'.$type;
+                $token = authcode($auth_str, 'ENCODE', 'person_show', 0);
+
                 $data = [
-                    'data' => $dataOrigin
+                    'data' => $dataOrigin,
+                    'token' => $token
                 ];
                 $out_data = out_format($data, '登录成功');
 
