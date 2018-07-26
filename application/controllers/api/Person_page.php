@@ -149,6 +149,54 @@ class Person_page extends CI_Controller {
 
     }
 
+    // 增加基本信息接口
+    public function add_base_info ()
+    {
+
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+
+//        renderJson($data);
+//        exit;
+
+        $phone = isset($data['phone']) && $data['phone'] !== '' ? $data['phone'] : null; // 必填
+        $email = isset($data['email']) && $data['email'] !== '' ? $data['email'] : null; // 必填
+        $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null; // 必填
+        $confirmPassword = isset($data['confirmPassword']) && $data['confirmPassword'] !== '' ? $data['confirmPassword'] : null; // 必填
+        $birthday = isset($data['birthday']) && $data['birthday'] !== '' ? $data['birthday'] : null;
+        $nickname = isset($data['nickname']) && $data['nickname'] !== '' ? $data['nickname'] : null;
+        $selfWord = isset($data['selfWord']) && $data['selfWord'] !== '' ? $data['selfWord'] : null;
+        $sex = isset($data['sex']) && $data['sex'] !== '' ? $data['sex'] : null;
+        $uploadImgPath = isset($data['uploadImgPath']) && $data['uploadImgPath'] !== '' ? $data['uploadImgPath'] : null;
+
+        // 校验必填项
+        $mark = via_param([$phone, $email, $password, $confirmPassword, $nickname, $sex]);
+
+        if ($mark) {
+            $param = [
+                'phone' => $phone,
+                'email' => $email,
+                'password' => $password,
+                'confirmPassword' => $confirmPassword,
+                'birthday' => $birthday,
+                'nickname' => $nickname,
+                'selfWord' => $selfWord,
+                'sex' => $sex,
+                'uploadImgPath' => $uploadImgPath
+            ];
+
+            $query = $this->PersonPage->add_base_info($param);
+
+            $out_data = out_format(null, '操作成功');
+
+        } else {
+            $out_data = out_format(null, '参数有误', 'fail');
+        }
+
+        renderJson($out_data);
+
+    }
+
 
 }
 ?>

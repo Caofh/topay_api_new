@@ -82,6 +82,31 @@ class PersonPage extends CI_Model{
 
     }
 
+    // 插入基本信息数据
+    public function add_base_info ($param = [])
+    {
+
+        $phone = isset($param['phone']) ? toDatabaseStr($param['phone']) : 'null';
+        $email = isset($param['email']) ? toDatabaseStr($param['email']) : 'null';
+        $nickname = isset($param['nickname']) ? toDatabaseStr($param['nickname']) : 'null';
+        $sex = isset($param['sex']) ? toDatabaseStr($param['sex']) : 'null';
+        $birthday = isset($param['birthday']) ? toDatabaseStr($param['birthday']) : 'null';
+        $password = isset($param['password']) ? toDatabaseStr($param['password']) : 'null';
+        $confirmPassword = isset($param['confirmPassword']) ? toDatabaseStr($param['confirmPassword']) : 'null';
+        $selfWord = isset($param['selfWord']) ? toDatabaseStr($param['selfWord']) : 'null';
+        $uploadImgPath = isset($param['uploadImgPath']) ? toDatabaseStr($param['uploadImgPath']) : 'null';
+
+        $order = 'insert into person_base_info
+        (id,phone,email,nickname,sex,birthday,password,confirmPassword,selfWord,uploadImgPath)
+        values(null, '.$phone.', '.$email.', '.$nickname.', '.$sex.', '.$birthday.', '.$password.'
+        , '.$confirmPassword.', '.$selfWord.', '.$uploadImgPath.')';
+
+        // 手动切换本地的personpage数据库
+        $DB_person = $this->load->database('personPage', TRUE);
+        $query = $DB_person->query($order);
+
+    }
+
 
 }
 ?>
