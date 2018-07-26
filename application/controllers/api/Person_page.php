@@ -6,6 +6,7 @@ class Person_page extends CI_Controller {
         parent::__construct();
 
         $this->load->model('PersonPage');
+        $this->load->model('PersonAuth');
 
         date_default_timezone_set('PRC'); // 将区时设为北京时区
     }
@@ -162,7 +163,6 @@ class Person_page extends CI_Controller {
         $phone = isset($data['phone']) && $data['phone'] !== '' ? $data['phone'] : null; // 必填
         $email = isset($data['email']) && $data['email'] !== '' ? $data['email'] : null; // 必填
         $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null; // 必填
-        $confirmPassword = isset($data['confirmPassword']) && $data['confirmPassword'] !== '' ? $data['confirmPassword'] : null; // 必填
         $birthday = isset($data['birthday']) && $data['birthday'] !== '' ? $data['birthday'] : null;
         $nickname = isset($data['nickname']) && $data['nickname'] !== '' ? $data['nickname'] : null;
         $selfWord = isset($data['selfWord']) && $data['selfWord'] !== '' ? $data['selfWord'] : null;
@@ -170,14 +170,13 @@ class Person_page extends CI_Controller {
         $uploadImgPath = isset($data['uploadImgPath']) && $data['uploadImgPath'] !== '' ? $data['uploadImgPath'] : null;
 
         // 校验必填项
-        $mark = via_param([$phone, $email, $password, $confirmPassword, $nickname, $sex]);
+        $mark = via_param([$phone, $email, $password, $nickname, $sex]);
 
         if ($mark) {
             $param = [
                 'phone' => $phone,
                 'email' => $email,
                 'password' => $password,
-                'confirmPassword' => $confirmPassword,
                 'birthday' => $birthday,
                 'nickname' => $nickname,
                 'selfWord' => $selfWord,
@@ -185,9 +184,19 @@ class Person_page extends CI_Controller {
                 'uploadImgPath' => $uploadImgPath
             ];
 
-            $query = $this->PersonPage->add_base_info($param);
+            $query = $this->PersonAuth->auth($param);
 
-            $out_data = out_format(null, '操作成功');
+            $database_mobile = isset($query['query']) && isset($query['query'][0]) && isset($query['query'][0]->phone) ?
+                $query['query'][0]->phone : null;
+
+            if ($database_mobile == $phone) {
+                $out_data = out_format(null, '此号码已经注册过', 'fail');
+
+            } else {
+                $query = $this->PersonPage->add_base_info($param);
+
+                $out_data = out_format(null, '操作成功');
+            }
 
         } else {
             $out_data = out_format(null, '参数有误', 'fail');
@@ -196,7 +205,6 @@ class Person_page extends CI_Controller {
         renderJson($out_data);
 
     }
-
 
 }
 ?>

@@ -92,14 +92,12 @@ class PersonPage extends CI_Model{
         $sex = isset($param['sex']) ? toDatabaseStr($param['sex']) : 'null';
         $birthday = isset($param['birthday']) ? toDatabaseStr($param['birthday']) : 'null';
         $password = isset($param['password']) ? toDatabaseStr($param['password']) : 'null';
-        $confirmPassword = isset($param['confirmPassword']) ? toDatabaseStr($param['confirmPassword']) : 'null';
         $selfWord = isset($param['selfWord']) ? toDatabaseStr($param['selfWord']) : 'null';
         $uploadImgPath = isset($param['uploadImgPath']) ? toDatabaseStr($param['uploadImgPath']) : 'null';
 
         $order = 'insert into person_base_info
-        (id,phone,email,nickname,sex,birthday,password,confirmPassword,selfWord,uploadImgPath)
-        values(null, '.$phone.', '.$email.', '.$nickname.', '.$sex.', '.$birthday.', '.$password.'
-        , '.$confirmPassword.', '.$selfWord.', '.$uploadImgPath.')';
+        (id,phone,email,nickname,sex,birthday,password,selfWord,uploadImgPath)
+        values(null, '.$phone.', '.$email.', '.$nickname.', '.$sex.', '.$birthday.', '.$password.', '.$selfWord.', '.$uploadImgPath.')';
 
         // 手动切换本地的personpage数据库
         $DB_person = $this->load->database('personPage', TRUE);
