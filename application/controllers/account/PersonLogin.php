@@ -18,15 +18,15 @@ class PersonLogin extends CI_Controller {
         // 取得传入数据
         $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
 
-        $mobile = isset($data['mobile']) && $data['mobile'] !== '' ? $data['mobile'] : null;
+        $phone = isset($data['phone']) && $data['phone'] !== '' ? $data['phone'] : null;
         $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
         $type = isset($data['type']) && $data['type'] !== '' ? $data['type'] : 1; // 1:手机号；2：邮箱
 
-        $mark = via_param([$mobile, $password]);
+        $mark = via_param([$phone, $password]);
 
         if ($mark) {
             $param = [
-                'mobile' => $mobile,
+                'phone' => $phone,
                 'password' => $password,
                 'type' => $type
             ];
