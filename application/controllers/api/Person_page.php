@@ -195,7 +195,12 @@ class Person_page extends CI_Controller {
             } else {
                 $query = $this->PersonPage->add_base_info($param);
 
-                $out_data = out_format(null, '操作成功');
+                $getData = $this->PersonAuth->auth($param);
+                $data = [
+                    'data' => $getData
+                ];
+
+                $out_data = out_format($data, '操作成功');
             }
 
         } else {

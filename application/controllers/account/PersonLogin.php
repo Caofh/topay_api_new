@@ -38,11 +38,10 @@ class PersonLogin extends CI_Controller {
 
             if ($database_password === $password) {
 
-                $dateOrigin = isset($query['query']) && isset($query['query'][0]) ?
-                    json_decode($query['query'][0], true) : null;
+                $dataOrigin = isset($query['query']) ?  (array)$query['query'] : null;
 
                 $data = [
-                    'data' => $dateOrigin
+                    'data' => $dataOrigin
                 ];
                 $out_data = out_format($data, '登录成功');
 
