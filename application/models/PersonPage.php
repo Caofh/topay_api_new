@@ -21,7 +21,7 @@ class PersonPage extends CI_Model{
 
         if (isset($id)) {
             if (isset($id) && $id !== '') {
-                $where['id'] = $id;
+                $where['user_id'] = $id;
             }
 
             $DB_person->where($where);
