@@ -105,6 +105,46 @@ class PersonPage extends CI_Model{
 
     }
 
+    // 查询用户列表数据
+    public function user_list($param = [])
+    {
+
+        $id = $param['id'];
+        $start = $param['start'];
+        $count = $param['count'];
+
+        // 手动切换本地的personpage数据库
+        $DB_person = $this->load->database('personPage', TRUE);
+
+        if (isset($id)) {
+            if (isset($id) && $id !== '') {
+                $where['id'] = $id;
+            }
+
+            $DB_person->where($where);
+        }
+
+        $DB_person->from('person_base_info');
+
+        $db = clone($DB_person);
+        $total_all = $DB_person->count_all_results(); // self_library总数
+
+        // 新查询总数后，用可从的db配置在查询真正的数据
+        $DB_person = $db;
+        if(intval($count) >= 0 ) {
+            $DB_person->limit($count, $start);
+            $DB_person->order_by("id", "desc"); // 倒序排列
+
+        }
+        $query = $DB_person->get();
+
+        return [
+            'query' => $query->result(),
+            'total_all' => $total_all
+        ];
+
+    }
+
 
 }
 ?>
