@@ -20,8 +20,10 @@ class PersonAuth extends CI_Model{
             if (isset($phone) && $phone !== '') {
                 if ($type == 1) {
                     $where['phone'] = $phone;
-                } else {
+                } else if ($type == 2) {
                     $where['email'] = $phone;
+                } else {
+                    $where['openid'] = $phone;
                 }
 
             }

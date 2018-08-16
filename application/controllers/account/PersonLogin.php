@@ -32,7 +32,7 @@ class PersonLogin extends MY_Controller {
         } else {
             $phone = isset($data['phone']) && $data['phone'] !== '' ? $data['phone'] : null;
             $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
-            $type = isset($data['type']) && $data['type'] !== '' ? $data['type'] : 1; // 1:手机号；2：邮箱
+            $type = isset($data['type']) && $data['type'] !== '' ? $data['type'] : 1; // 1:手机号；2：邮箱；3：openid
         }
 
         $mark = via_param([$phone, $password]);
