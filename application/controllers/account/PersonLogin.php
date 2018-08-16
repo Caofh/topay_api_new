@@ -35,9 +35,7 @@ class PersonLogin extends MY_Controller {
             $type = isset($data['type']) && $data['type'] !== '' ? $data['type'] : 1; // 1:手机号；2：邮箱；3：openid
         }
 
-        $mark = via_param([$phone, $password]);
-
-        if ($mark) {
+        if (isset($type) && $type == 3) {
             $param = [
                 'phone' => $phone,
                 'password' => $password,
@@ -46,13 +44,9 @@ class PersonLogin extends MY_Controller {
 
             $query = $this->personAuth->auth($param);
 
-            $database_password = isset($query['query']) && isset($query['query'][0]) && isset($query['query'][0]->password) ?
-                $query['query'][0]->password : null;
+            $dataOrigin = isset($query['query']) ?  (array)$query['query'] : null;
 
-            if ($database_password === $password) {
-
-                $dataOrigin = isset($query['query']) ?  (array)$query['query'] : null;
-
+            if ($dataOrigin) {
                 $auth_str = $phone.'/'.$password.'/'.$type;
                 $token = authcode($auth_str, 'ENCODE', 'person_show', 0);
 
@@ -63,12 +57,46 @@ class PersonLogin extends MY_Controller {
                 $out_data = out_format($data, '登录成功');
 
             } else {
-                $out_data = out_format(null, '用户名或密码错误', 'fail');
-
+                $out_data = out_format($data, '登录失败', 'fail');
             }
 
         } else {
-            $out_data = out_format(null, '请填写用户名及密码', 'fail');
+            $mark = via_param([$phone, $password]);
+
+            if ($mark) {
+                $param = [
+                    'phone' => $phone,
+                    'password' => $password,
+                    'type' => $type
+                ];
+
+                $query = $this->personAuth->auth($param);
+
+                $database_password = isset($query['query']) && isset($query['query'][0]) && isset($query['query'][0]->password) ?
+                    $query['query'][0]->password : null;
+
+                if ($database_password === $password) {
+
+                    $dataOrigin = isset($query['query']) ?  (array)$query['query'] : null;
+
+                    $auth_str = $phone.'/'.$password.'/'.$type;
+                    $token = authcode($auth_str, 'ENCODE', 'person_show', 0);
+
+                    $data = [
+                        'data' => $dataOrigin,
+                        'token' => $token
+                    ];
+                    $out_data = out_format($data, '登录成功');
+
+                } else {
+                    $out_data = out_format(null, '用户名或密码错误', 'fail');
+
+                }
+
+            } else {
+                $out_data = out_format(null, '请填写用户名及密码', 'fail');
+            }
+
         }
 
         renderJson($out_data);
