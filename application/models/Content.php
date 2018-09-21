@@ -37,6 +37,7 @@ class Content extends CI_Model{
         $this->db = $db;
         if(intval($count) >= 0 ) {
             $this->db->limit($count, $start);
+            $this->db->order_by("id", "desc"); // 倒序排列
         }
         $query = $this->db->get();
 
