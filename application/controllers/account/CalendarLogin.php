@@ -52,14 +52,16 @@ class CalendarLogin extends MY_Controller {
 
         // 取得传入数据
         $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+        $openid = isset($_GET['openid']) && $_GET['openid'] !== '' ? $_GET['openid'] : null;
 
+        $data['openid'] = $data['openid'] ? $data['openid'] : $openid;
 //        $openid = isset($data['openid']) && $data['openid'] !== '' ? $data['openid'] : null;
 //        $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
 //        $allow = isset($data['allow']) && $data['allow'] !== '' ? $data['allow'] : null;
 
 //        $mark = via_param([$openid]);
 
-        if (isset($data['openid'])) {
+        if (isset($openid) || isset($data['openid'])) {
             $param = $data;
 
             // 获取公司所有人员数据
