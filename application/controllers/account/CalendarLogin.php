@@ -5,6 +5,8 @@ class CalendarLogin extends MY_Controller {
     {
         parent::__construct();
 
+        $this->load->model('calendarAuth');
+
         date_default_timezone_set('PRC'); // 将区时设为北京时区
     }
 
@@ -39,6 +41,45 @@ class CalendarLogin extends MY_Controller {
 
         }
 
+
+        renderJson($out_data);
+
+    }
+
+    // 用户注册
+    public function register()
+    {
+
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+
+//        $openid = isset($data['openid']) && $data['openid'] !== '' ? $data['openid'] : null;
+//        $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
+//        $allow = isset($data['allow']) && $data['allow'] !== '' ? $data['allow'] : null;
+
+//        $mark = via_param([$openid]);
+
+        if (isset($data['openid'])) {
+            $param = $data;
+
+            // 获取公司所有人员数据
+            $query = $this->calendarAuth->get_user_list($param);
+
+            $person_mark = $query['total_all'];
+
+            if ($person_mark) {
+                $out_data = out_format($query, '当前用户已经注册过');
+
+            } else {
+                $query = $this->calendarAuth->register($param);
+                $out_data = out_format(null, '用户注册成功');
+
+            }
+
+
+        } else {
+            $out_data = out_format(null, '请填写姓名及密码', 'fail');
+        }
 
         renderJson($out_data);
 
