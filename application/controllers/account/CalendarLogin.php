@@ -54,12 +54,8 @@ class CalendarLogin extends MY_Controller {
         $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
         $openid = isset($_GET['openid']) && $_GET['openid'] !== '' ? $_GET['openid'] : null;
 
+        // 向data中添加openid，避免get传过来没有取到问题
         $data['openid'] = $data['openid'] ? $data['openid'] : $openid;
-//        $openid = isset($data['openid']) && $data['openid'] !== '' ? $data['openid'] : null;
-//        $password = isset($data['password']) && $data['password'] !== '' ? $data['password'] : null;
-//        $allow = isset($data['allow']) && $data['allow'] !== '' ? $data['allow'] : null;
-
-//        $mark = via_param([$openid]);
 
         if (isset($openid) || isset($data['openid'])) {
             $param = $data;

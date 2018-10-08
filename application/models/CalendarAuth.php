@@ -20,7 +20,7 @@ class  CalendarAuth extends CI_Model{
         $province = isset($param['province']) ? toDatabaseStr($param['province']) : 'null';
         $session_key = isset($param['session_key']) ? toDatabaseStr($param['session_key']) : 'null'; // 注册时的session_key，可更新
         $timeStamp = toDatabaseStr(time());
-        $timeStr = toDatabaseStr(date('Y-m-d h:i:s', time()));
+        $timeStr = toDatabaseStr(date('Y-m-d H:i:s', time()));
 
         $order = 'insert into user
         (id,openid,timestamp,timestr)
