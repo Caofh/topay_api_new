@@ -83,5 +83,25 @@ class CalendarLogin extends MY_Controller {
 
     }
 
+    // 数据统计接口(逐条插入，累加)
+    public function data_count()
+    {
+
+        // 取得传入数据
+        $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : [];
+        $openid = isset($_GET['openid']) && $_GET['openid'] !== '' ? $_GET['openid'] : null;
+
+        // 向data中添加openid，避免get传过来没有取到问题
+        $data['openid'] = $data['openid'] ? $data['openid'] : $openid;
+
+        $param = $data;
+
+        $query = $this->calendarAuth->data_count($param);
+        $out_data = out_format(null, '插入统计数据成功');
+
+        renderJson($out_data);
+
+    }
+
 }
 ?>
