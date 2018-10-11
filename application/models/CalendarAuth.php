@@ -43,7 +43,9 @@ class  CalendarAuth extends CI_Model{
     public function data_count ($param = [])
     {
 
+        // type （1：日历首页分享成功数据）
         $type = isset($param['type']) ? toDatabaseStr($param['type']) : 'null';
+
         $openid = isset($param['openid']) ? toDatabaseStr($param['openid']) : 'null';
         $avatarUrl = isset($param['avatarUrl']) ? toDatabaseStr($param['avatarUrl']) : 'null';
         $city = isset($param['city']) ? toDatabaseStr($param['city']) : 'null';
