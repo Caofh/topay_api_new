@@ -1,6 +1,11 @@
 <?php
 class DreamLogin extends MY_Controller {
 
+    // 黑名单用户，不统计数据.
+    public static $blackList = [
+        'odI565Y6MEyE_6mqvcNdhWC_-8WE' // Topay用户不参加数据统计，无意义
+    ];
+
     function __construct()
     {
         parent::__construct();
@@ -95,6 +100,13 @@ class DreamLogin extends MY_Controller {
         $data['openid'] = $data['openid'] ? $data['openid'] : $openid;
 
         $param = $data;
+
+        // 黑名单中的用户不统计数据.
+        if (in_array($param['openid'], self::$blackList)) {
+            $out_data = out_format(null, '当前用户为开发者，不参与统计', 'fail');
+            renderJson($out_data);
+            return false;
+        }
 
         $query = $this->dreamAuth->data_count($param);
         $out_data = out_format(null, '插入统计数据成功');
