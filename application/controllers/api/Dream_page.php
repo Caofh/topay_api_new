@@ -17,11 +17,16 @@ class Dream_page extends MY_Controller {
         // 取得传入数据
         $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : null; // post传入数据
         $url = $url . $data['get']; // 将get参数加上
+        $method = $data['method']; // 将get参数加上
+        $headers = [
+            'content-type' => 'application/x-www-form-urlencoded'
+        ];
         unset($data['get']);
+        unset($data['method']);
 
-        if ($data) {
+        if ($method == 'post') {
             if ($url) {
-                $data = $this->post($url, $data);
+                $data = $this->post($url, $data, $headers);
                 renderJson($data);
 
             } else {
@@ -32,7 +37,7 @@ class Dream_page extends MY_Controller {
 
         } else {
             if ($url) {
-                $data = $this->get($url);
+                $data = $this->get($url, null, $headers);
                 renderJson($data);
 
             } else {
