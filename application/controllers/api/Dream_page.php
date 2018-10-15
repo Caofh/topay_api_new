@@ -8,7 +8,7 @@ class Dream_page extends MY_Controller {
         date_default_timezone_set('PRC'); // 将区时设为北京时区
     }
 
-    // 用户列表接口
+    // 用户列表接口(post传参)
     public function get_data () {
         // 处理传参
         $url = isset($_GET['url']) && $_GET['url'] !== '' ? $_GET['url'] : null; // 必填
@@ -16,6 +16,8 @@ class Dream_page extends MY_Controller {
 
         // 取得传入数据
         $data = file_get_contents("php://input") ? json_decode(file_get_contents("php://input"), true) : null; // post传入数据
+        $url = $url . $data['get']; // 将get参数加上
+        unset($data['get']);
 
         if ($data) {
             if ($url) {
